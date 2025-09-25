@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAMADHAAN - हर समस्या का समाधान</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: #ffffff;
+            color: #0f1419;
+            line-height: 1.5;
+            min-height: 100vh;
+        }
+
+        /* Dashboard Layout */
+        .dashboard-container {
+            display: flex;
+            max-width: 1265px;
+            margin: 0 auto;
+            min-height: 100vh;
+        }
+
+        /* Left Sidebar */
+        .sidebar-left {
+            width: 275px;
+            padding: 0 12px;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            border-right: 1px solid #eff3f4;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo {
+            padding: 12px;
+            margin-bottom: 8px;
+        }
+
+        .logo a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: #2d4a2d;
+            font-weight: 700;
+            font-size: 1.3rem;
+        }
+
+        .logo i {
+            color: #2d4a2d;
+            font-size: 1.5rem;
+        }
+
+        .nav-menu {
+            list-style: none;
+            margin-top: 8px;
+        }
+
+        .nav-item {
+            margin-bottom: 4px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 12px;
+            text-decoration: none;
+            color: #0f1419;
+            border-radius: 50px;
+            transition: background-color 0.2s;
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+
+        .nav-link:hover {
+            background-color: #f7f9f9;
+        }
+
+        .nav-link.active {
+            font-weight: 700;
+            color: #2d4a2d;
+        }
+
+        .nav-link i {
+            font-size: 1.4rem;
+            width: 26px;
+            text-align: center;
+        }
+
+        .post-button {
+            background-color: #2d4a2d;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 16px 0;
+            width: 90%;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-top: 16px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .post-button:hover {
+            background-color: #2d4a2d;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            margin-top: auto;
+            border-radius: 50px;
+            transition: background-color 0.2s;
+        }
+
+        .user-profile:hover {
+            background-color: #f7f9f9;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #2d4a2d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+        }
+
+        .user-info {
+            flex: 1;
+        }
+
+        .user-name {
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+
+        .user-handle {
+            color: #536471;
+            font-size: 0.9rem;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 275px;
+            border-right: 1px solid #eff3f4;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .feed-header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            z-index: 10;
+            padding: 12px 16px;
+            border-bottom: 1px solid #eff3f4;
+        }
+
+        .feed-header h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        /* Login Container */
+        .login-container {
+            width: 100%;
+            max-width: 400px;
+            padding: 0 20px;
+        }
+
+        .login-card {
+            background: white;
+            border-radius: 16px;
+            border: 1px solid #eff3f4;
+            padding: 32px;
+            text-align: center;
+        }
+
+        .login-header {
+            margin-bottom: 24px;
+        }
+
+        .login-header h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #0f1419;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .login-header p {
+            color: #536471;
+            font-size: 0.95rem;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .form-group {
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #0f1419;
+            font-size: 0.95rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #cfd9de;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.2s;
+            background-color: #f7f9f9;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #2d4a2d;
+            background-color: #ffffff;
+            box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.1);
+        }
+
+        .form-group input::placeholder {
+            color: #8b98a5;
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 12px;
+            background-color: #2d4a2d;
+            color: white;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 1rem;
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .login-button:hover {
+            background-color: #2d4a2d;
+        }
+
+        .switch-auth {
+            margin-top: 20px;
+            font-size: 0.95rem;
+            color: #536471;
+        }
+
+        .switch-auth a {
+            color: #2d4a2d;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .switch-auth a:hover {
+            text-decoration: underline;
+        }
+
+        .error-message {
+            background-color: #fef2f2;
+            color: #dc2626;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            font-size: 0.9rem;
+            border: 1px solid #fecaca;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .error-message i {
+            font-size: 1rem;
+        }
+
+        /* Features Section */
+        .features-section {
+            margin-top: 24px;
+            padding: 20px;
+            background-color: #f8fafc;
+            border-radius: 12px;
+            text-align: left;
+        }
+
+        .features-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #0f1419;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .features-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+            color: #536471;
+        }
+
+        .feature-item i {
+            color: #2d4a2d;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .sidebar-left {
+                width: 88px;
+            }
+            
+            .nav-link span, .user-info, .post-button span {
+                display: none;
+            }
+            
+            .nav-link {
+                justify-content: center;
+                padding: 12px;
+            }
+            
+            .post-button {
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 0;
+            }
+            
+            .post-button i {
+                margin: 0;
+            }
+            
+            .user-profile {
+                width: 64px;
+                justify-content: center;
+            }
+            
+            .main-content {
+                margin-left: 88px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-container {
+                flex-direction: column;
+            }
+            
+            .sidebar-left {
+                position: relative;
+                width: 100%;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid #eff3f4;
+                padding: 8px;
+            }
+            
+            .nav-menu {
+                display: flex;
+                justify-content: space-around;
+                margin-top: 0;
+            }
+            
+            .nav-item {
+                margin-bottom: 0;
+            }
+            
+            .post-button, .user-profile {
+                display: none;
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 20px 0;
+            }
+            
+            .feed-header {
+                position: relative;
+                background: transparent;
+                backdrop-filter: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 24px 20px;
+            }
+            
+            .login-header h2 {
+                font-size: 1.3rem;
+            }
+            
+            .features-section {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <!-- Left Sidebar -->
+        <div class="sidebar-left">
+            <div class="logo">
+                <a href="{% url 'home' %}">
+                    <i class="fas fa-handshake"></i>
+                    <span>SAMADHAAN</span>
+                </a>
+            </div>
+            
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="{% url 'home' %}" class="nav-link">
+                        <i class="fas fa-home"></i>
+                        <span>Home</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'create_post' %}" class="nav-link">
+                        <i class="fas fa-plus-circle"></i>
+                        <span>Report Issue</span>
+                    </a>
+                </li>
+            </ul>
+            
+            <!-- <button class="post-button" onclick="location.href='{% url 'create_post' %}'">
+                <i class="fas fa-plus"></i>
+                <span>Post</span>
+            </button> -->
+            
+            <div class="user-profile">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">Guest</div>
+                    <div class="user-handle">@guest</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="feed-header">
+                <h1>Login</h1>
+            </div>
+            
+            <div class="login-container">
+                <div class="login-card">
+                    <div class="login-header">
+                        <h2>
+                            <i class="fas fa-sign-in-alt"></i>
+                            Welcome Back
+                        </h2>
+                        <p>Sign in to your SAMADHAAN account</p>
+                    </div>
+
+                    {% if error %}
+                    <div class="error-message">
+                        <i class="fas fa-exclamation-circle"></i>
+                        {{ error }}
+                    </div>
+                    {% endif %}
+
+                    <form method="POST" class="login-form">
+                        {% csrf_token %}
+                        
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" id="username" name="username" placeholder="Enter your username" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                        </div>
+
+                        <button type="submit" class="login-button">
+                            <i class="fas fa-lock-open"></i>
+                            Login to Your Account
+                        </button>
+                    </form>
+
+                    <p class="switch-auth">
+                        Don't have an account? <a href="{% url 'signup' %}">
+                            <i class="fas fa-user-plus"></i>
+                            Sign Up
+                        </a>
+                    </p>
+
+                    <div class="features-section">
+                        <div class="features-title">
+                            <i class="fas fa-star"></i>
+                            Community Features
+                        </div>
+                        <div class="features-list">
+                            <div class="feature-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Track reported issues in your neighborhood</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Receive updates on issue resolution</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Connect with local community members</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simple form enhancement
+        document.addEventListener('DOMContentLoaded', function() {
+            const usernameInput = document.getElementById('username');
+            const passwordInput = document.getElementById('password');
+            const loginButton = document.querySelector('.login-button');
+            
+            // Add focus effects
+            [usernameInput, passwordInput].forEach(input => {
+                input.addEventListener('focus', function() {
+                    this.style.borderColor = '#4f46e5';
+                    this.style.background = '#ffffff';
+                });
+                
+                input.addEventListener('blur', function() {
+                    this.style.borderColor = '#cfd9de';
+                    this.style.background = '#f7f9f9';
+                });
+            });
+            
+            // Form validation
+            const form = document.querySelector('.login-form');
+            form.addEventListener('submit', function(e) {
+                let isValid = true;
+                
+                if (!usernameInput.value.trim()) {
+                    usernameInput.style.borderColor = '#dc2626';
+                    isValid = false;
+                }
+                
+                if (!passwordInput.value.trim()) {
+                    passwordInput.style.borderColor = '#dc2626';
+                    isValid = false;
+                }
+                
+                if (!isValid) {
+                    e.preventDefault();
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

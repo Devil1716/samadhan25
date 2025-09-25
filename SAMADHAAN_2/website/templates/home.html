@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAMADHAAN - हर समस्या का समाधान</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: #ffffff;
+            color: #0f1419;
+            line-height: 1.5;
+            min-height: 100vh;
+        }
+
+        /* Dashboard Layout */
+        .dashboard-container {
+            display: flex;
+            max-width: 1265px;
+            margin: 0 auto;
+            min-height: 100vh;
+        }
+
+        /* Left Sidebar */
+        .sidebar-left {
+            width: 275px;
+            padding: 0 12px;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            border-right: 1px solid #eff3f4;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo {
+            padding: 12px;
+            margin-bottom: 8px;
+        }
+
+        .logo a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: #2d4a2d;
+            font-weight: 700;
+            font-size: 1.3rem;
+        }
+
+        .logo i {
+            color: #2d4a2d;
+            font-size: 1.5rem;
+        }
+
+        .nav-menu {
+            list-style: none;
+            margin-top: 8px;
+            flex: 1;
+        }
+
+        .nav-item {
+            margin-bottom: 4px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 12px;
+            text-decoration: none;
+            color: #0f1419;
+            border-radius: 50px;
+            transition: background-color 0.2s;
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+
+        .nav-link:hover {
+            background-color: #f7f9f9;
+        }
+
+        .nav-link.active {
+            font-weight: 700;
+            color: #2d4a2d;
+        }
+
+        .nav-link i {
+            font-size: 1.4rem;
+            width: 26px;
+            text-align: center;
+        }
+
+        .post-button {
+            background-color: #2d4a2d;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 16px 0;
+            width: 90%;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-top: 16px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .post-button:hover {
+            background-color: #2d4a2d;
+        }
+
+        /* User Section */
+        .user-section {
+            margin-top: auto;
+            padding: 12px 0;
+        }
+
+        .logout-button {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 12px;
+            text-decoration: none;
+            color: #0f1419;
+            border-radius: 50px;
+            transition: background-color 0.2s;
+            font-weight: 500;
+            font-size: 1.1rem;
+            width: 100%;
+            border: none;
+            background: none;
+            cursor: pointer;
+            margin-bottom: 8px;
+        }
+
+        .logout-button:hover {
+            background-color: #f7f9f9;
+            color: #dc2626;
+        }
+
+        .logout-button i {
+            font-size: 1.4rem;
+            width: 26px;
+            text-align: center;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 50px;
+            transition: background-color 0.2s;
+        }
+
+        .user-profile:hover {
+            background-color: #f7f9f9;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #2d4a2d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+        }
+
+        .user-info {
+            flex: 1;
+        }
+
+        .user-name {
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+
+        .user-handle {
+            color: #536471;
+            font-size: 0.9rem;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 275px;
+            border-right: 1px solid #eff3f4;
+            min-height: 100vh;
+        }
+
+        .feed-header {
+            position: sticky;
+            top: 0;
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            z-index: 10;
+            padding: 12px 16px;
+            border-bottom: 1px solid #eff3f4;
+        }
+
+        .feed-header h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .create-post {
+            padding: 16px;
+            border-bottom: 1px solid #eff3f4;
+            display: flex;
+            gap: 12px;
+        }
+
+        .post-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background-color: #2d4a2d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .post-input {
+            flex: 1;
+        }
+
+        .post-input textarea {
+            width: 100%;
+            border: none;
+            resize: none;
+            font-size: 1.25rem;
+            padding: 12px 0;
+            min-height: 60px;
+            outline: none;
+        }
+
+        .post-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 12px;
+        }
+
+        .action-icons {
+            display: flex;
+            gap: 16px;
+            color: #2d4a2d;
+        }
+
+        .action-icons i {
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: background-color 0.2s;
+        }
+
+        .action-icons i:hover {
+            background-color: #e0f2fe;
+        }
+
+        .tweet-button {
+            background-color: #2d4a2d;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 8px 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .tweet-button:hover {
+            background-color: #2d4a2d;
+        }
+
+        .tweet-button:disabled {
+            background-color: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        /* Feed */
+        .feed {
+            border-top: 1px solid #eff3f4;
+        }
+
+        .post-card {
+            padding: 16px;
+            border-bottom: 1px solid #eff3f4;
+            transition: background-color 0.2s;
+        }
+
+        .post-card:hover {
+            background-color: #f7f9f9;
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+
+        .post-author {
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+
+        .post-handle, .post-time {
+            color: #536471;
+            font-size: 0.9rem;
+        }
+
+        .post-content {
+            margin: 8px 0 12px;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .post-image {
+            width: 100%;
+            border-radius: 16px;
+            margin-top: 12px;
+            max-height: 400px;
+            object-fit: cover;
+        }
+
+        .post-engagement {
+            display: flex;
+            justify-content: space-between;
+            max-width: 425px;
+            margin-top: 12px;
+            color: #536471;
+        }
+
+        .engagement-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 50px;
+            transition: all 0.2s;
+        }
+
+        .engagement-item:hover {
+            background-color: #f0f9ff;
+            color: #2d4a2d;
+        }
+
+        .engagement-item.liked {
+            color: #f91880;
+        }
+
+        /* Post Management */
+        .post-management {
+            display: flex;
+            gap: 0.8rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .btn-delete, .btn-update {
+            background: none;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .btn-delete {
+            background: #ef4444;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background: #dc2626;
+        }
+
+        .btn-update {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-update:hover {
+            background: #059669;
+        }
+
+        /* Empty State */
+        .empty-state {
+            padding: 40px 16px;
+            text-align: center;
+            color: #536471;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #cbd5e1;
+        }
+
+        .empty-state h2 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-state p {
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-create {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 12px 24px;
+            background: #2d4a2d;
+            color: white;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: 0.3s;
+            font-weight: 600;
+        }
+
+        .btn-create:hover {
+            background: #2d4a2d;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .sidebar-left {
+                width: 88px;
+            }
+            
+            .nav-link span, .logout-button span, .user-info, .post-button span {
+                display: none;
+            }
+            
+            .nav-link, .logout-button {
+                justify-content: center;
+                padding: 12px;
+            }
+            
+            .post-button {
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 0;
+            }
+            
+            .post-button i {
+                margin: 0;
+            }
+            
+            .user-profile {
+                width: 64px;
+                justify-content: center;
+            }
+            
+            .main-content {
+                margin-left: 88px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-container {
+                flex-direction: column;
+            }
+            
+            .sidebar-left {
+                position: relative;
+                width: 100%;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid #eff3f4;
+                padding: 8px;
+            }
+            
+            .nav-menu {
+                display: flex;
+                justify-content: space-around;
+                margin-top: 0;
+            }
+            
+            .nav-item {
+                margin-bottom: 0;
+            }
+            
+            .post-button, .user-section {
+                display: none;
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .action-icons {
+                display: none;
+            }
+            
+            .post-actions {
+                justify-content: flex-end;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .create-post {
+                padding: 12px;
+            }
+            
+            .post-avatar {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .post-input textarea {
+                font-size: 1.1rem;
+            }
+            
+            .engagement-item {
+                gap: 4px;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <!-- Left Sidebar -->
+        <div class="sidebar-left">
+            <div class="logo">
+                <a href="{% url 'home' %}">
+                    <i class="fas fa-handshake"></i>
+                    <span>SAMADHAAN</span>
+                </a>
+            </div>
+            
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="{% url 'home' %}" class="nav-link active">
+                        <i class="fas fa-home"></i>
+                        <span>Home</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'create_post' %}" class="nav-link">
+                        <i class="fas fa-plus-circle"></i>
+                        <span>Report Issue</span>
+                    </a>
+                </li>
+            </ul>
+            
+            <!-- <button class="post-button" onclick="location.href='{% url 'create_post' %}'">
+                <i class="fas fa-plus"></i>
+                <span>Post</span>
+            </button> -->
+            
+            <!-- User Section with Logout -->
+            <div class="user-section">
+                {% if user.is_authenticated %}
+                <form method="POST" action="{% url 'logout' %}" style="display: inline; width: 100%;">
+                    {% csrf_token %}
+                    <button type="submit" class="logout-button">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </button>
+                </form>
+                {% endif %}
+                
+                <div class="user-profile">
+                    <div class="user-avatar">
+                        {% if user.is_authenticated %}
+                            {{ user.username|slice:":1"|upper }}
+                        {% else %}
+                            <i class="fas fa-user"></i>
+                        {% endif %}
+                    </div>
+                    <div class="user-info">
+                        <div class="user-name">
+                            {% if user.is_authenticated %}
+                                {{ user.username }}
+                            {% else %}
+                                Guest
+                            {% endif %}
+                        </div>
+                        <div class="user-handle">
+                            {% if user.is_authenticated %}
+                                @{{ user.username }}
+                            {% else %}
+                                @guest
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="feed-header">
+                <h1>Posts</h1>
+            </div>
+            
+            {% if user.is_authenticated %}
+            <div class="create-post">
+                <div class="post-avatar">
+                    {{ user.username|slice:":1"|upper }}
+                </div>
+                <div class="post-input">
+                    <form method="post" action="{% url 'create_post' %}">
+                        {% csrf_token %}
+                        <textarea name="content" placeholder="Report an issue in your community..." required></textarea>
+                        <div class="post-actions">
+                            <div class="action-icons">
+                                <i class="fas fa-image" title="Add image"></i>
+                                <i class="fas fa-map-marker-alt" title="Add location"></i>
+                            </div>
+                            <button type="submit" class="tweet-button">Post</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            {% endif %}
+            
+            <div class="feed">
+                {% block content %}
+                {% for post in posts %}
+                <div class="post-card">
+                    <div class="post-header">
+                        <div class="post-author">{{ post.author.username }}</div>
+                        <div class="post-handle">@{{ post.author.username }}</div>
+                        <div class="post-time">· {{ post.created_at|timesince }} ago</div>
+                    </div>
+                    
+                    <div class="post-content">
+                        <h3>{{ post.title }}</h3>
+                        <p>{{ post.content }}</p>
+                    </div>
+                    
+                    {% if post.photo %}
+                    <img src="{{ post.photo.url }}" alt="Issue Image" class="post-image">
+                    {% endif %}
+                    
+                    <div class="post-engagement">
+                        <div class="engagement-item comment">
+                            <i class="far fa-comment"></i>
+                            <span>24</span>
+                        </div>
+                        <div class="engagement-item retweet">
+                            <i class="fas fa-retweet"></i>
+                            <span>12</span>
+                        </div>
+                        <div class="engagement-item like {% if user in post.likes.all %}liked{% endif %}">
+                            <form action="{% url 'like_post' post.id %}" method="post" style="display: inline;">
+                                {% csrf_token %}
+                                <button type="submit" style="background: none; border: none; cursor: pointer; display: flex; align-items: center; gap: 6px; color: inherit;">
+                                    <i class="{% if user in post.likes.all %}fas{% else %}far{% endif %} fa-heart"></i>
+                                    <span>{{ post.total_likes }}</span>
+                                </button>
+                            </form>
+                        </div>
+                        <div class="engagement-item share">
+                            <i class="far fa-share-square"></i>
+                        </div>
+                    </div>
+
+                    {% if user == post.author %}
+                    <div class="post-management">
+                        <form action="{% url 'delete_post' post.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-delete">
+                                <i class="fas fa-trash"></i>
+                                Delete
+                            </button>
+                        </form>
+                        <form action="{% url 'update_post' post.id %}" method="get">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-update">
+                                <i class="fas fa-edit"></i>
+                                Update
+                            </button>
+                        </form>
+                    </div>
+                    {% endif %}
+                </div>
+                {% empty %}
+                <div class="empty-state">
+                    <i class="fas fa-inbox"></i>
+                    <h2>No issues reported yet</h2>
+                    <p>Be the first to report an issue in your community and make a difference</p>
+                    <a href="{% url 'create_post' %}" class="btn-create">
+                        <i class="fas fa-plus-circle"></i>
+                        Report an Issue
+                    </a>
+                </div>
+                {% endfor %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Enable/disable post button based on content
+        const textarea = document.querySelector('.post-input textarea');
+        const tweetButton = document.querySelector('.tweet-button');
+        
+        if (textarea && tweetButton) {
+            textarea.addEventListener('input', function() {
+                tweetButton.disabled = this.value.trim() === '';
+            });
+        }
+
+        // Like functionality
+        document.querySelectorAll('.engagement-item.like').forEach(item => {
+            const form = item.querySelector('form');
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    // This will be handled by Django, we just add visual feedback
+                    const icon = this.querySelector('i');
+                    const countSpan = this.querySelector('span');
+                    
+                    if (icon.classList.contains('far')) {
+                        icon.classList.remove('far');
+                        icon.classList.add('fas');
+                        item.classList.add('liked');
+                        countSpan.textContent = parseInt(countSpan.textContent) + 1;
+                    } else {
+                        icon.classList.remove('fas');
+                        icon.classList.add('far');
+                        item.classList.remove('liked');
+                        countSpan.textContent = parseInt(countSpan.textContent) - 1;
+                    }
+                });
+            }
+        });
+
+        // Logout confirmation
+        const logoutButton = document.querySelector('.logout-button');
+        if (logoutButton) {
+            logoutButton.addEventListener('click', function(e) {
+                if (!confirm('Are you sure you want to logout?')) {
+                    e.preventDefault();
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

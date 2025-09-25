@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAMADHAAN - हर समस्या का समाधान</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: #ffffff;
+            color: #0f1419;
+            line-height: 1.5;
+            min-height: 100vh;
+        }
+
+        /* Mobile-First Layout */
+        .dashboard-container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Top Navigation - Mobile */
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: #ffffff;
+            border-bottom: 1px solid #eff3f4;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: #0f1419;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .logo i {
+            color: #4f46e5;
+            font-size: 1.3rem;
+        }
+
+        .mobile-menu-btn {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: #0f1419;
+            cursor: pointer;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+        }
+
+        .feed-header {
+            position: sticky;
+            top: 60px;
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            z-index: 10;
+            padding: 16px;
+            border-bottom: 1px solid #eff3f4;
+        }
+
+        .feed-header h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .create-post {
+            padding: 16px;
+            border-bottom: 1px solid #eff3f4;
+            display: none; /* Hidden by default on mobile */
+        }
+
+        .post-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #4f46e5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .post-input {
+            flex: 1;
+        }
+
+        .post-input textarea {
+            width: 100%;
+            border: none;
+            resize: none;
+            font-size: 1.1rem;
+            padding: 12px 0;
+            min-height: 50px;
+            outline: none;
+        }
+
+        .post-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 12px;
+        }
+
+        .action-icons {
+            display: flex;
+            gap: 12px;
+            color: #4f46e5;
+        }
+
+        .action-icons i {
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 50%;
+            transition: background-color 0.2s;
+        }
+
+        .action-icons i:hover {
+            background-color: #e0f2fe;
+        }
+
+        .post-button {
+            background-color: #4f46e5;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 8px 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .post-button:hover {
+            background-color: #4338ca;
+        }
+
+        .post-button:disabled {
+            background-color: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        /* Feed */
+        .feed {
+            padding-bottom: 60px; /* Space for bottom nav */
+        }
+
+        .post-card {
+            padding: 16px;
+            border-bottom: 1px solid #eff3f4;
+            transition: background-color 0.2s;
+        }
+
+        .post-card:hover {
+            background-color: #f7f9f9;
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+
+        .post-author {
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+
+        .post-handle, .post-time {
+            color: #536471;
+            font-size: 0.9rem;
+        }
+
+        .post-content {
+            margin: 8px 0 12px;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .post-image {
+            width: 100%;
+            border-radius: 16px;
+            margin-top: 12px;
+            max-height: 300px;
+            object-fit: cover;
+        }
+
+        .post-engagement {
+            display: flex;
+            justify-content: space-between;
+            max-width: 100%;
+            margin-top: 12px;
+            color: #536471;
+        }
+
+        .engagement-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 50px;
+            transition: all 0.2s;
+            font-size: 0.85rem;
+        }
+
+        .engagement-item:hover {
+            background-color: #f0f9ff;
+            color: #4f46e5;
+        }
+
+        .engagement-item.liked {
+            color: #f91880;
+        }
+
+        /* Bottom Navigation - Mobile */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #ffffff;
+            border-top: 1px solid #eff3f4;
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0;
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #536471;
+            font-size: 0.75rem;
+            padding: 8px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .nav-item.active {
+            color: #4f46e5;
+        }
+
+        .nav-item i {
+            font-size: 1.2rem;
+            margin-bottom: 2px;
+        }
+
+        .nav-item:hover {
+            background-color: #f7f9f9;
+        }
+
+        /* Sidebar - Desktop */
+        .sidebar-left {
+            display: none;
+        }
+
+        /* Desktop Styles */
+        @media (min-width: 1024px) {
+            .dashboard-container {
+                flex-direction: row;
+                max-width: 1265px;
+                margin: 0 auto;
+            }
+
+            .top-nav, .bottom-nav {
+                display: none;
+            }
+
+            .sidebar-left {
+                display: block;
+                width: 275px;
+                padding: 0 12px;
+                position: fixed;
+                height: 100vh;
+                overflow-y: auto;
+                border-right: 1px solid #eff3f4;
+            }
+
+            .logo {
+                padding: 12px;
+                margin-bottom: 8px;
+                font-size: 1.3rem;
+            }
+
+            .nav-menu {
+                list-style: none;
+                margin-top: 8px;
+            }
+
+            .nav-item-desktop {
+                display: flex;
+                align-items: center;
+                gap: 16px;
+                padding: 12px;
+                text-decoration: none;
+                color: #0f1419;
+                border-radius: 50px;
+                transition: background-color 0.2s;
+                font-weight: 500;
+                font-size: 1.1rem;
+                margin-bottom: 4px;
+            }
+
+            .nav-item-desktop:hover {
+                background-color: #f7f9f9;
+            }
+
+            .nav-item-desktop.active {
+                font-weight: 700;
+                color: #4f46e5;
+            }
+
+            .nav-item-desktop i {
+                font-size: 1.4rem;
+                width: 26px;
+                text-align: center;
+            }
+
+            .post-button-desktop {
+                background-color: #4f46e5;
+                color: white;
+                border: none;
+                border-radius: 50px;
+                padding: 16px 0;
+                width: 90%;
+                font-weight: 700;
+                font-size: 1.1rem;
+                margin-top: 16px;
+                cursor: pointer;
+                transition: background-color 0.2s;
+            }
+
+            .post-button-desktop:hover {
+                background-color: #4338ca;
+            }
+
+            .user-profile {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                padding: 12px;
+                margin-top: auto;
+                border-radius: 50px;
+                transition: background-color 0.2s;
+                position: absolute;
+                bottom: 20px;
+                width: 90%;
+            }
+
+            .user-profile:hover {
+                background-color: #f7f9f9;
+            }
+
+            .user-avatar {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                background-color: #4f46e5;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                font-weight: 700;
+            }
+
+            .user-info {
+                flex: 1;
+            }
+
+            .user-name {
+                font-weight: 700;
+                font-size: 0.95rem;
+            }
+
+            .user-handle {
+                color: #536471;
+                font-size: 0.9rem;
+            }
+
+            .main-content {
+                margin-left: 275px;
+                border-right: 1px solid #eff3f4;
+                min-height: 100vh;
+            }
+
+            .create-post {
+                display: flex;
+                gap: 12px;
+            }
+
+            .feed-header {
+                top: 0;
+            }
+        }
+
+        /* Empty state */
+        .empty-state {
+            padding: 40px 16px;
+            text-align: center;
+            color: #536471;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #cbd5e1;
+        }
+
+        .empty-state h2 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-state p {
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-create {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 12px 24px;
+            background: #4f46e5;
+            color: white;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: 0.3s;
+            font-weight: 600;
+        }
+
+        .btn-create:hover {
+            background: #4338ca;
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        .footer {
+            background: #ffffff;
+            color: #64748b;
+            text-align: center;
+            padding: 1.5rem;
+            border-top: 1px solid #eff3f4;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #64748b;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .footer-links a:hover {
+            color: #4f46e5;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <!-- Top Navigation - Mobile -->
+        <div class="top-nav">
+            <a href="{% url 'home' %}" class="logo">
+                <i class="fas fa-handshake"></i>
+                <span>SAMADHAAN</span>
+            </a>
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- Sidebar - Desktop -->
+        <div class="sidebar-left">
+            <div class="logo">
+                <a href="{% url 'home' %}" style="text-decoration: none; color: inherit;">
+                    <i class="fas fa-handshake"></i>
+                    <span>SAMADHAAN</span>
+                </a>
+            </div>
+            
+            <ul class="nav-menu">
+                <li>
+                    <a href="{% url 'home' %}" class="nav-item-desktop active">
+                        <i class="fas fa-home"></i>
+                        <span>Home</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'create_post' %}" class="nav-item-desktop">
+                        <i class="fas fa-plus-circle"></i>
+                        <span>Report Issue</span>
+                    </a>
+                </li>
+            </ul>
+            
+            <button class="post-button-desktop">
+                <i class="fas fa-plus"></i>
+                <span>Post</span>
+            </button>
+            
+            <div class="user-profile">
+                <div class="user-avatar">
+                    {% if user.is_authenticated %}
+                        {{ user.username|slice:":1"|upper }}
+                    {% else %}
+                        <i class="fas fa-user"></i>
+                    {% endif %}
+                </div>
+                <div class="user-info">
+                    <div class="user-name">
+                        {% if user.is_authenticated %}
+                            {{ user.username }}
+                        {% else %}
+                            Guest
+                        {% endif %}
+                    </div>
+                    <div class="user-handle">
+                        {% if user.is_authenticated %}
+                            @{{ user.username }}
+                        {% else %}
+                            @guest
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="feed-header">
+                <h1>Posts</h1>
+            </div>
+            
+            {% if user.is_authenticated %}
+            <div class="create-post">
+                <div class="post-avatar">
+                    {{ user.username|slice:":1"|upper }}
+                </div>
+                <div class="post-input">
+                    <textarea placeholder="Report an issue in your community..."></textarea>
+                    <div class="post-actions">
+                        <div class="action-icons">
+                            <i class="fas fa-image" title="Add image"></i>
+                            <i class="fas fa-map-marker-alt" title="Add location"></i>
+                        </div>
+                        <button class="post-button" disabled>Post</button>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            
+            <div class="feed">
+                {% block content %}
+                {% for post in posts %}
+                <div class="post-card">
+                    <div class="post-header">
+                        <div class="post-author">{{ post.author.username }}</div>
+                        <div class="post-handle">@{{ post.author.username }}</div>
+                        <div class="post-time">· {{ post.created_at|timesince }} ago</div>
+                    </div>
+                    
+                    <div class="post-content">
+                        <h3>{{ post.title }}</h3>
+                        <p>{{ post.content }}</p>
+                    </div>
+                    
+                    {% if post.photo %}
+                    <img src="{{ post.photo.url }}" alt="Issue Image" class="post-image">
+                    {% endif %}
+                    
+                    <div class="post-engagement">
+                        <div class="engagement-item comment">
+                            <i class="far fa-comment"></i>
+                            <span>24</span>
+                        </div>
+                        <div class="engagement-item retweet">
+                            <i class="fas fa-retweet"></i>
+                            <span>12</span>
+                        </div>
+                        <div class="engagement-item like {% if user in post.likes.all %}liked{% endif %}">
+                            <form action="{% url 'like_post' post.id %}" method="post" style="display: inline;">
+                                {% csrf_token %}
+                                <button type="submit" style="background: none; border: none; cursor: pointer; display: flex; align-items: center; gap: 6px; color: inherit;">
+                                    <i class="{% if user in post.likes.all %}fas{% else %}far{% endif %} fa-heart"></i>
+                                    <span>{{ post.total_likes }}</span>
+                                </button>
+                            </form>
+                        </div>
+                        <div class="engagement-item share">
+                            <i class="far fa-share-square"></i>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="empty-state">
+                    <i class="fas fa-inbox"></i>
+                    <h2>No issues reported yet</h2>
+                    <p>Be the first to report an issue in your community and make a difference</p>
+                    <a href="{% url 'create_post' %}" class="btn-create">
+                        <i class="fas fa-plus-circle"></i>
+                        Report an Issue
+                    </a>
+                </div>
+                {% endfor %}
+                {% endblock %}
+            </div>
+        </div>
+
+        <!-- Bottom Navigation - Mobile -->
+        <div class="bottom-nav">
+            <a href="{% url 'home' %}" class="nav-item active">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+            <a href="{% url 'create_post' %}" class="nav-item">
+                <i class="fas fa-plus-circle"></i>
+                <span>Report</span>
+            </a>
+            {% if user.is_authenticated %}
+            <a href="#" class="nav-item">
+                <i class="fas fa-user"></i>
+                <span>Profile</span>
+            </a>
+            {% else %}
+            <a href="{% url 'login' %}" class="nav-item">
+                <i class="fas fa-sign-in-alt"></i>
+                <span>Login</span>
+            </a>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2023 SAMADHAAN. हर समस्या का समाधान</p>
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Contact</a>
+                <a href="#">About</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Enable/disable post button based on content
+        const textarea = document.querySelector('.post-input textarea');
+        const postButton = document.querySelector('.post-button');
+        
+        if (textarea && postButton) {
+            textarea.addEventListener('input', function() {
+                postButton.disabled = this.value.trim() === '';
+            });
+        }
+
+        // Mobile menu toggle
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const sidebarLeft = document.querySelector('.sidebar-left');
+        
+        if (mobileMenuBtn && sidebarLeft) {
+            mobileMenuBtn.addEventListener('click', function() {
+                sidebarLeft.style.display = sidebarLeft.style.display === 'block' ? 'none' : 'block';
+            });
+        }
+
+        // Like functionality
+        document.querySelectorAll('.engagement-item.like').forEach(item => {
+            const form = item.querySelector('form');
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    // This will be handled by Django, we just add visual feedback
+                    const icon = this.querySelector('i');
+                    const countSpan = this.querySelector('span');
+                    
+                    if (icon.classList.contains('far')) {
+                        icon.classList.remove('far');
+                        icon.classList.add('fas');
+                        item.classList.add('liked');
+                        countSpan.textContent = parseInt(countSpan.textContent) + 1;
+                    } else {
+                        icon.classList.remove('fas');
+                        icon.classList.add('far');
+                        item.classList.remove('liked');
+                        countSpan.textContent = parseInt(countSpan.textContent) - 1;
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>
